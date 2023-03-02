@@ -1,9 +1,17 @@
 import styled from 'styled-components';
 
-export const H1 = styled.div`
-  font-size: 1em;
+export const H2 = styled.h2`
+  font-size: 2em;
   font-weight: 700;
-  color: #ffffff;
+  color: #000;
+  line-height: 1.2;
+  letter-spacing: 0.01em;
+`;
+
+export const H3 = styled.h3`
+  font-size: 1.2em;
+  font-weight: 700;
+  color: #000;
   line-height: 1.2;
   letter-spacing: 0.01em;
 `;

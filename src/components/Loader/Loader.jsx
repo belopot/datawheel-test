@@ -1,36 +1,24 @@
 import React from 'react';
-import {AnimatePresence, motion} from 'framer-motion';
 import styled from 'styled-components';
 import Spiner from 'components/Spiner';
 
-export default function Loader({
-  visible,
-  className,
-  size = 60,
-  label = '',
-  ...props
-}) {
+export default function Loader({className, size = 60, label = ''}) {
   return (
-    <AnimatePresence>
-      {visible && (
-        <Holder
-          {...props}
-          className={className}
-          initial={{opacity: 0}}
-          animate={{opacity: 1}}
-          exit={{opacity: 0}}
-        >
-          <Container>
-            <Spiner size={size} />
-          </Container>
-          {label !== '' && <Label>{label}</Label>}
-        </Holder>
-      )}
-    </AnimatePresence>
+    <Holder
+      className={className}
+      initial={{opacity: 0}}
+      animate={{opacity: 1}}
+      exit={{opacity: 0}}
+    >
+      <Container>
+        <Spiner size={size} />
+      </Container>
+      {label !== '' && <Label>{label}</Label>}
+    </Holder>
   );
 }
 
-const Holder = styled(motion.div)`
+const Holder = styled.div`
   position: absolute;
   top: 0;
   left: 0;
@@ -38,8 +26,6 @@ const Holder = styled(motion.div)`
   width: 100%;
   min-height: 100px;
   height: 100%;
-  backdrop-filter: blur(6px);
-  background-color: #00000055;
   display: flex;
   flex-direction: column;
   justify-content: center;
