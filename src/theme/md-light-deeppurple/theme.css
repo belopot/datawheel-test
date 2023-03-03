@@ -8818,3 +8818,15 @@
 .p-autocomplete-item {
   padding: 0 !important;
 }
+
+.p-dropdown {
+  background-color: #f75151;
+}
+
+.p-dropdown-label {
+  color: white;
+}
+
+.p-dropdown-trigger-icon {
+  color: white;
+}

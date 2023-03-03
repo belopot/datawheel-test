@@ -48,14 +48,10 @@ export const tradeDataRequest = async ([countryId, year]) => {
       exports: exportsData.data || [],
       totalImports: totalImports,
       prevTotalImports: prevTotalImports,
-      importsPercent: Number((totalImports / prevTotalImports) * 100).toFixed(
-        2,
-      ),
+      importsPercent: Math.round((totalImports / prevTotalImports) * 100),
       totalExports: totalExports,
       prevTotalExports: prevTotalExports,
-      exportsPercent: Number((totalExports / prevTotalExports) * 100).toFixed(
-        2,
-      ),
+      exportsPercent: Math.round((totalExports / prevTotalExports) * 100),
     };
   } catch (error) {
     return null;
