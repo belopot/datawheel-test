@@ -68,7 +68,6 @@ export default function Chart() {
           onChange={e => setYear(e.value)}
           options={Years}
           placeholder="Select a year"
-          className="p-invalid"
         />
       </div>
       <Summary>{`In ${year}, imports ${
