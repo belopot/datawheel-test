@@ -18,7 +18,14 @@ export default function App() {
           <Routes>
             {PrimaryRoutes.map((route, index) => (
               <Fragment key={index}>
-                <Route path={route.path} element={route.component} />
+                <Route path={route.path} element={route.element}>
+                  {route.children && (
+                    <Route
+                      path={route.children.path}
+                      element={route.children.element}
+                    />
+                  )}
+                </Route>
               </Fragment>
             ))}
           </Routes>

@@ -2,15 +2,22 @@ import React, {useState} from 'react';
 import styled from 'styled-components';
 import {useQuery} from '@tanstack/react-query';
 import {AutoComplete} from 'primereact/autocomplete';
+import {useNavigate} from 'react-router-dom';
 
 import {allCountriesRequest} from 'api/country';
+import {useStore} from 'state/store';
 
 import PageTransition from 'components/PageTransition';
 import {MiddleContainer} from 'components/Containers';
 import {H2, H3} from 'components/Labels';
 import Loader from 'components/Loader';
+import WaveText from 'components/WaveText';
 
 export default function Search() {
+  const navigate = useNavigate();
+
+  const setCurrentCountry = useStore(state => state.setCurrentCountry);
+
   // Country data
   const {data, isLoading} = useQuery({
     queryKey: ['allCountriessRequest'],
@@ -36,35 +43,47 @@ export default function Search() {
   };
 
   const itemTemplate = d => {
-    return <p>{d['EN Label']}</p>;
-  };
-
-  // Display loading indicator while fetching countries list
-  if (isLoading) {
+    const countryId = d['ID'];
     return (
-      <PageTransition>
-        <Holder>
-          <Loader />
-        </Holder>
-      </PageTransition>
+      <CountryItem
+        onClick={() => {
+          setCurrentCountry(d);
+          navigate(`/country/${countryId}`);
+        }}
+      >
+        {d['EN Label']}
+      </CountryItem>
     );
-  }
+  };
 
   return (
     <PageTransition>
       <Holder>
         <MiddleContainer>
-          <H2 className="mb-5">National Trade Data</H2>
-          <H3 className="mb-2">Search a country:</H3>
-          <AutoComplete
-            value={searchValue}
-            suggestions={suggestions}
-            completeMethod={completeMethod}
-            onChange={e => setSearchValue(e.value)}
-            itemTemplate={itemTemplate}
-            field="EN Label"
-            scrollHeight="70vh"
-          />
+          <H2 className="mb-5">
+            <WaveText
+              text="National Trade Data"
+              replay={true}
+              delay={0.3}
+              duration={0.02}
+            />
+          </H2>
+          {isLoading ? (
+            <Loader label="Loading country data" />
+          ) : (
+            <>
+              <H3 className="mb-2">Search a country:</H3>
+              <AutoComplete
+                value={searchValue}
+                suggestions={suggestions}
+                completeMethod={completeMethod}
+                onChange={e => setSearchValue(e.value)}
+                itemTemplate={itemTemplate}
+                field="EN Label"
+                scrollHeight="70vh"
+              />
+            </>
+          )}
         </MiddleContainer>
       </Holder>
     </PageTransition>
@@ -74,7 +93,11 @@ export default function Search() {
 const Holder = styled.div`
   display: flex;
   width: 100%;
-  height: 100%;
+  min-height: 100%;
   background-color: aliceblue;
   padding-top: 10em;
+`;
+
+const CountryItem = styled.p`
+  padding: 0.5em 1em;
 `;

@@ -4,4 +4,7 @@ export const useStore = create((set, get) => ({
   // Menu
   menuVisible: false,
   setMenuVisible: v => set({menuVisible: v}),
+  //
+  currentCountry: null,
+  setCurrentCountry: v => set({currentCountry: v}),
 }));
