@@ -19,13 +19,6 @@ export default function Loader({className, size = 60, label = ''}) {
 }
 
 const Holder = styled.div`
-  position: absolute;
-  top: 0;
-  left: 0;
-  z-index: 1;
-  width: 100%;
-  min-height: 100px;
-  height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -41,6 +34,7 @@ const Container = styled.div`
 `;
 
 const Label = styled.p`
-  color: #aaaaaa;
+  color: #000;
   text-align: center;
+  font-size: 1.2em;
 `;
