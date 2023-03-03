@@ -2,10 +2,12 @@ import React, {useEffect, useState} from 'react';
 import styled from 'styled-components';
 import {useNavigate, useParams} from 'react-router-dom';
 import {useMutation} from '@tanstack/react-query';
-import {Button} from 'primereact/button';
 import {Treemap} from 'd3plus-react';
+import {Button} from 'primereact/button';
+import {Dropdown} from 'primereact/dropdown';
 
 import {tradeDataRequest} from 'api/trade';
+import {Years} from 'dataset/years';
 import {useStore} from 'state/store';
 import Loader from 'components/Loader';
 import {H3} from 'components/Labels';
@@ -17,14 +19,13 @@ export default function Chart() {
   const currentCountry = useStore(state => state.currentCountry);
 
   const [chartData, setChartData] = useState(null);
+  const [year, setYear] = useState(2020);
 
   const {mutate, isLoading} = useMutation(tradeDataRequest, {
     onSuccess: data => {
       setChartData(data);
     },
   });
-
-  const year = 2020;
 
   useEffect(() => {
     if (countryId) {
@@ -47,8 +48,6 @@ export default function Chart() {
   // Data type
   // {HS2 ID: 101, HS2: 'Live animals', Trade Value: 50707}
 
-  console.log(chartData);
-
   return (
     <Holder>
       {currentCountry && (
@@ -63,11 +62,31 @@ export default function Chart() {
           />
         </CountryBar>
       )}
+      <div>
+        <Dropdown
+          value={year}
+          onChange={e => setYear(e.value)}
+          options={Years}
+          placeholder="Select a year"
+        />
+      </div>
       <Summary>{`In ${year}, imports ${
-        chartData.importsPercent > 100 ? 'increased' : 'decreased'
-      } by ${chartData.importsPercent}% and exports ${
-        chartData.importsPercent > 100 ? 'increased' : 'decreased'
-      } by ${chartData.importsPercent}% compared to ${year - 1}.`}</Summary>
+        chartData.importsPercent > 100
+          ? 'increased'
+          : chartData.importsPercent === 100
+          ? 'is same'
+          : 'decreased'
+      } ${chartData.importsPercent === 100 ? 'to' : 'by'} ${
+        chartData.importsPercent
+      }% and exports ${
+        chartData.exportsPercent > 100
+          ? 'increased'
+          : chartData.exportsPercent === 100
+          ? 'is same'
+          : 'decreased'
+      } ${chartData.exportsPercent === 100 ? 'to' : 'by'} ${
+        chartData.exportsPercent
+      }% compared to ${year - 1}.`}</Summary>
       <ChartHolder>
         <H3>Exports</H3>
         <Treemap
