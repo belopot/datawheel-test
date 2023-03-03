@@ -5,10 +5,10 @@ import {useMutation} from '@tanstack/react-query';
 import {Button} from 'primereact/button';
 import {Treemap} from 'd3plus-react';
 
-import {chartDataRequest} from 'api/chart';
+import {tradeDataRequest} from 'api/trade';
 import {useStore} from 'state/store';
 import Loader from 'components/Loader';
-import {H2, H3} from 'components/Labels';
+import {H3} from 'components/Labels';
 
 export default function Chart() {
   const navigate = useNavigate();
@@ -16,19 +16,21 @@ export default function Chart() {
 
   const currentCountry = useStore(state => state.currentCountry);
 
-  const [chartData, setChartData] = useState();
+  const [chartData, setChartData] = useState(null);
 
-  const {mutate, isLoading} = useMutation(chartDataRequest, {
+  const {mutate, isLoading} = useMutation(tradeDataRequest, {
     onSuccess: data => {
       setChartData(data);
     },
   });
 
+  const year = 2020;
+
   useEffect(() => {
     if (countryId) {
-      mutate(countryId);
+      mutate([countryId, year]);
     }
-  }, [countryId]);
+  }, [countryId, year]);
 
   if (isLoading) {
     return (
@@ -38,12 +40,14 @@ export default function Chart() {
     );
   }
 
-  if (chartData === undefined) {
+  if (!chartData) {
     return <>No data</>;
   }
 
   // Data type
   // {HS2 ID: 101, HS2: 'Live animals', Trade Value: 50707}
+
+  console.log(chartData);
 
   return (
     <Holder>
@@ -59,6 +63,11 @@ export default function Chart() {
           />
         </CountryBar>
       )}
+      <Summary>{`In ${year}, imports ${
+        chartData.importsPercent > 100 ? 'increased' : 'decreased'
+      } by ${chartData.importsPercent}% and exports ${
+        chartData.importsPercent > 100 ? 'increased' : 'decreased'
+      } by ${chartData.importsPercent}% compared to ${year - 1}.`}</Summary>
       <ChartHolder>
         <H3>Exports</H3>
         <Treemap
@@ -103,4 +112,10 @@ const ChartHolder = styled.div`
   background-color: white;
   overflow: hidden;
   filter: drop-shadow(0px 3px 3px rgba(0, 0, 0, 0.15));
+`;
+
+const Summary = styled.div`
+  width: 100%;
+  user-select: all;
+  font-size: 1.3em;
 `;
