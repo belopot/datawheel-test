@@ -70,23 +70,27 @@ export default function Chart() {
           placeholder="Select a year"
         />
       </div>
-      <Summary>{`In ${year}, imports ${
-        chartData.importsPercent > 100
-          ? 'increased'
-          : chartData.importsPercent === 100
-          ? 'is same'
-          : 'decreased'
-      } ${chartData.importsPercent === 100 ? 'to' : 'by'} ${
-        chartData.importsPercent
-      }% and exports ${
-        chartData.exportsPercent > 100
-          ? 'increased'
-          : chartData.exportsPercent === 100
-          ? 'is same'
-          : 'decreased'
-      } ${chartData.exportsPercent === 100 ? 'to' : 'by'} ${
-        chartData.exportsPercent
-      }% compared to ${year - 1}.`}</Summary>
+      {!Number.isNaN(chartData.importsPercent) &&
+        !Number.isNaN(chartData.exportsPercent) && (
+          <Summary>{`In ${year}, imports ${
+            chartData.importsPercent > 100
+              ? 'increased'
+              : chartData.importsPercent === 100
+              ? 'is same'
+              : 'decreased'
+          } ${chartData.importsPercent === 100 ? 'to' : 'by'} ${
+            chartData.importsPercent
+          }% and exports ${
+            chartData.exportsPercent > 100
+              ? 'increased'
+              : chartData.exportsPercent === 100
+              ? 'is same'
+              : 'decreased'
+          } ${chartData.exportsPercent === 100 ? 'to' : 'by'} ${
+            chartData.exportsPercent
+          }% compared to ${year - 1}.`}</Summary>
+        )}
+
       <ChartHolder>
         <H3>Exports</H3>
         <Treemap
