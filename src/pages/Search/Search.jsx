@@ -71,7 +71,7 @@ export default function Search() {
           {isLoading ? (
             <Loader label="Loading country data" />
           ) : (
-            <>
+            <div className="p-fluid scalein animation-duration-300">
               <H3 className="mb-2">Search a country:</H3>
               <AutoComplete
                 value={searchValue}
@@ -83,7 +83,7 @@ export default function Search() {
                 scrollHeight="70vh"
                 placeholder="Type a cuntry name"
               />
-            </>
+            </div>
           )}
         </MiddleContainer>
       </Holder>

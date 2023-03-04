@@ -63,7 +63,7 @@ export default function Chart() {
             chartData.importsPercent
           }% compared to ${currentYear - 1}.`}</Summary>
         )}
-      <ChartHolder>
+      <ChartHolder className="scalein animation-duration-300">
         <H3>Exports</H3>
         <Treemap
           config={{
@@ -73,7 +73,7 @@ export default function Chart() {
           }}
         />
       </ChartHolder>
-      <ChartHolder>
+      <ChartHolder className="scalein animation-duration-300 animation-delay-100">
         <H3>Imports</H3>
         <Treemap
           config={{

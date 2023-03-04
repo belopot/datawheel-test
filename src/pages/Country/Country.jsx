@@ -55,7 +55,7 @@ export default function Country() {
             />
           </H2>
           {currentCountry ? (
-            <CountryBar className="mb-5 flex w-full align-items-center justify-content-between flex-wrap gap-2">
+            <CountryBar className="mb-5 flex w-full align-items-center justify-content-between flex-wrap gap-2 scalein animation-duration-300">
               <div className="flex align-items-center gap-3">
                 <CountryName>{currentCountry['EN Label']}</CountryName>
                 <Dropdown
