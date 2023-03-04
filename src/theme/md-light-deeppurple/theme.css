@@ -8821,6 +8821,7 @@
 
 .p-dropdown {
   background-color: #f75151;
+  height: 40px;
 }
 
 .p-dropdown-label {
@@ -8829,4 +8830,8 @@
 
 .p-dropdown-trigger-icon {
   color: white;
+}
+
+.p-dropdown .p-inputtext {
+  padding: 0.65em;
 }

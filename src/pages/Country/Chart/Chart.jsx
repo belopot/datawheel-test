@@ -1,26 +1,21 @@
 import React, {useEffect, useState} from 'react';
 import styled from 'styled-components';
-import {useNavigate, useParams} from 'react-router-dom';
+import {useParams} from 'react-router-dom';
 import {useMutation} from '@tanstack/react-query';
 import {Treemap} from 'd3plus-react';
-import {Button} from 'primereact/button';
-import {Dropdown} from 'primereact/dropdown';
 
 import {tradeDataRequest} from 'api/trade';
-import {Years} from 'dataset/years';
 import {useStore} from 'state/store';
+import {device} from 'theme/device';
 import Loader from 'components/Loader';
 import {H3} from 'components/Labels';
-import {device} from 'theme/device';
 
 export default function Chart() {
-  const navigate = useNavigate();
   const {countryId} = useParams();
 
-  const currentCountry = useStore(state => state.currentCountry);
+  const currentYear = useStore(state => state.currentYear);
 
   const [chartData, setChartData] = useState(null);
-  const [year, setYear] = useState(2020);
 
   const {mutate, isLoading} = useMutation(tradeDataRequest, {
     onSuccess: data => {
@@ -30,9 +25,9 @@ export default function Chart() {
 
   useEffect(() => {
     if (countryId) {
-      mutate([countryId, year]);
+      mutate([countryId, currentYear]);
     }
-  }, [countryId, year]);
+  }, [countryId, currentYear]);
 
   if (isLoading) {
     return (
@@ -46,43 +41,11 @@ export default function Chart() {
     return <>No data</>;
   }
 
-  // Data type
-  // {HS2 ID: 101, HS2: 'Live animals', Trade Value: 50707}
-
   return (
     <Holder>
-      {currentCountry && (
-        <CountryBar className="mb-2 flex w-full align-items-center justify-content-between">
-          <H3>{currentCountry['EN Label']}</H3>
-          <Button
-            label="Back"
-            onClick={() => {
-              //Back
-              navigate(-1);
-            }}
-          />
-        </CountryBar>
-      )}
-      <div>
-        <Dropdown
-          value={year}
-          onChange={e => setYear(e.value)}
-          options={Years}
-          placeholder="Select a year"
-          className="w-full"
-        />
-      </div>
       {!Number.isNaN(chartData.importsPercent) &&
         !Number.isNaN(chartData.exportsPercent) && (
-          <Summary>{`In ${year}, imports ${
-            chartData.importsPercent > 100
-              ? 'increased'
-              : chartData.importsPercent === 100
-              ? 'is same'
-              : 'decreased'
-          } ${chartData.importsPercent === 100 ? 'as' : 'by'} ${
-            chartData.importsPercent
-          }% and exports ${
+          <Summary>{`In ${currentYear}, exports ${
             chartData.exportsPercent > 100
               ? 'increased'
               : chartData.exportsPercent === 100
@@ -90,9 +53,16 @@ export default function Chart() {
               : 'decreased'
           } ${chartData.exportsPercent === 100 ? 'as' : 'by'} ${
             chartData.exportsPercent
-          }% compared to ${year - 1}.`}</Summary>
+          }% and imports ${
+            chartData.importsPercent > 100
+              ? 'increased'
+              : chartData.importsPercent === 100
+              ? 'is same'
+              : 'decreased'
+          } ${chartData.importsPercent === 100 ? 'as' : 'by'} ${
+            chartData.importsPercent
+          }% compared to ${currentYear - 1}.`}</Summary>
         )}
-
       <ChartHolder>
         <H3>Exports</H3>
         <Treemap
@@ -124,19 +94,13 @@ const Holder = styled.div`
   padding-bottom: 5em;
 `;
 
-const CountryBar = styled.div`
-  background-color: white;
-  padding: 0.5em 1em;
-  filter: drop-shadow(0px 3px 3px rgba(0, 0, 0, 0.15));
-`;
-
 const ChartHolder = styled.div`
   width: 100%;
   padding: 1em;
   min-height: 30vh;
   background-color: white;
   overflow: hidden;
-  filter: drop-shadow(0px 3px 3px rgba(0, 0, 0, 0.15));
+  filter: drop-shadow(0px 5px 5px rgba(0, 0, 0, 0.15));
   @media ${device.pad} {
     min-height: 300px;
   }

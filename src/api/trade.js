@@ -44,16 +44,16 @@ export const tradeDataRequest = async ([countryId, year]) => {
     prevExportsData.data.forEach(d => (prevTotalExports += d['Trade Value']));
 
     return {
-      //Imports
-      imports: importsData.data || [],
-      totalImports: totalImports,
-      prevTotalImports: prevTotalImports,
-      importsPercent: Math.round((totalImports / prevTotalImports) * 100),
       //Exports
       exports: exportsData.data || [],
       totalExports: totalExports,
       prevTotalExports: prevTotalExports,
       exportsPercent: Math.round((totalExports / prevTotalExports) * 100),
+      //Imports
+      imports: importsData.data || [],
+      totalImports: totalImports,
+      prevTotalImports: prevTotalImports,
+      importsPercent: Math.round((totalImports / prevTotalImports) * 100),
     };
   } catch (error) {
     return null;

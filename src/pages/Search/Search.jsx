@@ -81,6 +81,7 @@ export default function Search() {
                 itemTemplate={itemTemplate}
                 field="EN Label"
                 scrollHeight="70vh"
+                placeholder="Type a cuntry name"
               />
             </>
           )}
