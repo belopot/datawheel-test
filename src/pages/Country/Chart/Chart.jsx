@@ -11,6 +11,7 @@ import {Years} from 'dataset/years';
 import {useStore} from 'state/store';
 import Loader from 'components/Loader';
 import {H3} from 'components/Labels';
+import {device} from 'theme/device';
 
 export default function Chart() {
   const navigate = useNavigate();
@@ -68,6 +69,7 @@ export default function Chart() {
           onChange={e => setYear(e.value)}
           options={Years}
           placeholder="Select a year"
+          className="w-full"
         />
       </div>
       {!Number.isNaN(chartData.importsPercent) &&
@@ -78,7 +80,7 @@ export default function Chart() {
               : chartData.importsPercent === 100
               ? 'is same'
               : 'decreased'
-          } ${chartData.importsPercent === 100 ? 'to' : 'by'} ${
+          } ${chartData.importsPercent === 100 ? 'as' : 'by'} ${
             chartData.importsPercent
           }% and exports ${
             chartData.exportsPercent > 100
@@ -86,7 +88,7 @@ export default function Chart() {
               : chartData.exportsPercent === 100
               ? 'is same'
               : 'decreased'
-          } ${chartData.exportsPercent === 100 ? 'to' : 'by'} ${
+          } ${chartData.exportsPercent === 100 ? 'as' : 'by'} ${
             chartData.exportsPercent
           }% compared to ${year - 1}.`}</Summary>
         )}
@@ -102,10 +104,10 @@ export default function Chart() {
         />
       </ChartHolder>
       <ChartHolder>
-        <H3>Exports</H3>
+        <H3>Imports</H3>
         <Treemap
           config={{
-            data: chartData.exports,
+            data: chartData.imports,
             groupBy: ['HS2'],
             sum: 'Trade Value',
           }}
@@ -130,11 +132,14 @@ const CountryBar = styled.div`
 
 const ChartHolder = styled.div`
   width: 100%;
-  min-height: 500px;
   padding: 1em;
+  min-height: 30vh;
   background-color: white;
   overflow: hidden;
   filter: drop-shadow(0px 3px 3px rgba(0, 0, 0, 0.15));
+  @media ${device.pad} {
+    min-height: 300px;
+  }
 `;
 
 const Summary = styled.div`

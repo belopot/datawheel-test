@@ -7,7 +7,7 @@ import {delay} from 'utils';
 export const allCountriesRequest = async () => {
   try {
     // In order to see loading indicator, added a delay
-    await delay(2000);
+    await delay(1000);
 
     // Get country
     const {data} = await api.get(
